@@ -10,7 +10,21 @@
     "default_popup": "popup.html",
     "default_title": "Kobodl"
   },
-  "options_ui": {
-    "page": "options.html"
+  "permissions": [
+    "storage",
+    "tabs",
+    "https://authorize.kobo.com/",
+    "http://store.kobobooks.com/",
+    "https://storeapi.kobo.com/"
+  ],
+  "externally_connectable": {
+    "matches": ["*://*.kobo.com/*"]
+  },
+  "background": {
+    "scripts": [
+      "js/chunk-vendors.js",
+      "js/background.js"
+    ],
+    "persistent": false
   }
 }

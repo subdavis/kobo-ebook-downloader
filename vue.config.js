@@ -12,11 +12,6 @@ module.exports = {
       template: 'public/popup.html',
       filename: 'popup.html',
     },
-    options: {
-      entry: 'src/options.js',
-      template: 'public/options.html',
-      filename: 'options.html',
-    },
   },
   // only matters if you try to use yarn link
   chainWebpack: (config) => {
@@ -25,5 +20,9 @@ module.exports = {
   // https://github.com/subdavis/vuejs-browser-extensions#other-problems
   configureWebpack: {
     devtool: 'cheap-source-map',
+    entry: {
+      background: './src/background.js',
+      inject: './src/inject.js'
+    }
   },
 }
