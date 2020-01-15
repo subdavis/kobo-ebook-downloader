@@ -13,19 +13,13 @@ async function inject() {
     }, resolve)
   );
   tab = tab[0]
-  await Promise.all([
-    new Promise((resolve) =>
-      chrome.tabs.executeScript(tab.id, {
-        'file': 'js/chunk-vendors.js'
-      }, resolve)
-    ),
-    new Promise((resolve) =>
-      chrome.tabs.executeScript(tab.id, {
-        'file': 'js/inject.js',
-        'runAt': 'document_end',
-      }, resolve)
-    ),
-  ]);
+
+  await new Promise((resolve) =>
+    chrome.tabs.executeScript(tab.id, {
+      'file': 'js/inject.js',
+      'runAt': 'document_end',
+    }, resolve)
+  ),
 
   chrome.tabs.update(tab.id, { active: true, highlighted: true })
 }

@@ -23,6 +23,11 @@ module.exports = {
     entry: {
       background: './src/background.js',
       inject: './src/inject.js'
+    },
+    optimization: {
+      splitChunks: {
+        minSize: Infinity,
+      }
     }
   },
 }

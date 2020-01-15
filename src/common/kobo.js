@@ -61,8 +61,8 @@ export default class KoboService {
     };
   }
 
-  async login({ username, password, captcha }) {
-    const { signInUrl, workflowId, requestVerificationToken}
+  login() {
+    const { signInUrl, workflowId, requestVerificationToken} = {};
   }
 
   async authenticateDevice(force = false) {
