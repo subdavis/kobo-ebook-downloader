@@ -1,4 +1,7 @@
-# kobodl
+# Kobo Ebook Downloader
+
+This browser extension mimicks a kobo hardware device to download ebooks without DRM encryption.  You paid for your books: you should be able to use them however you please.
+
 
 ## Project setup
 ```
@@ -7,7 +10,7 @@ yarn install
 
 ### Compiles and hot-reloads for development
 ```
-yarn serve
+yarn watch
 ```
 
 ### Compiles and minifies for production
