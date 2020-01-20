@@ -10,7 +10,7 @@ export default class AsyncStorage {
   get(keyArr) {
     return new Promise((resolve) =>
       chrome.storage.local.get(keyArr, (result) => {
-        this.properties.forEach((p) => {
+        keyArr.forEach((p) => {
           if (!(p in result)){
             result[p] = '';
           }

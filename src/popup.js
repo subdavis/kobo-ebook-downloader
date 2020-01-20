@@ -1,7 +1,7 @@
 import Vue from 'vue'
 
 import App from './Popup.vue'
-import { inject } from "./common/messenger";
+import { inject } from "./common/utils";
 import { StorageTokens } from './common/definitions';
 import KoboService from './common/kobo';
 import StorageService from './common/storage';
@@ -10,20 +10,18 @@ const properties = Object.values(StorageTokens);
 const storageService = new StorageService({ properties });
 const koboService = new KoboService(storageService);
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
-function makeVue() {
-  return new Vue({
-    render: h => h(App),
-    provide: {
-      koboService,
-    },
-  }).$mount('#app');
+async function init() {
+  if (await koboService.isLoggedIn()) {
+    new Vue({
+      render: h => h(App),
+      provide: { koboService },
+    }).$mount('#app');
+  } else {
+    await inject();
+    window.close();
+  }
 }
 
-koboService
-  .isLoggedIn()
-  .then(loggedin => loggedin
-    ? makeVue()
-    : inject().then(() => window.close())
-  );
+init();

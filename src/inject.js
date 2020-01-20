@@ -4,16 +4,23 @@ import Inject from './Inject.vue';
 import { StorageTokens } from './common/definitions';
 import KoboService from './common/kobo';
 import StorageService from './common/storage';
-import { injectScript, runInPageContext } from './common/utils';
+import { addInPageContext, injectScript, backgroundRequest } from './common/utils';
 
 console.debug('Content Script Injection');
 
 const properties = Object.values(StorageTokens);
 const storageService = new StorageService({ properties });
-const koboService = new KoboService(storageService);
+const koboService = new KoboService(storageService, backgroundRequest);
 
-document.getElementById('header').remove();
+try {
+  document.getElementById('header').remove();
+} catch {
+  console.error('No header...')
+}
 document.title = "Sign Into Kobo.com";
+
+const bodyContent = document.getElementsByClassName('body-content');
+const mountPoint = document.getElementById('content') || bodyContent[0];
 
 function insertCaptcha() {
   let extensionId = 'fmhmiaejopepamlcjkncpgpdjichnecm';
@@ -28,8 +35,8 @@ function insertCaptcha() {
   });
 }
 
-function handleSignIn(args) {
-  // koboService.
+function handleSignIn({ username, password, captcha }) {
+  koboService.login({ username, password, captcha });
 }
 
 const vm = new Vue({
@@ -48,16 +55,20 @@ const vm = new Vue({
     koboService,
   },
   async mounted() {
-    runInPageContext(insertCaptcha, 'insertCaptcha');
+    addInPageContext(insertCaptcha, 'insertCaptcha');
     injectScript(
       '//www.google.com/recaptcha/api.js?onload=insertCaptcha',
       'grecaptcha-script');
-
+    // koboService.login({
+    //   username: '',
+    //   password: '',
+    //   captcha: '',
+    // });
   },
-}).$mount('#content');
+}).$mount(mountPoint);
 
 chrome.runtime.onMessage
   .addListener((request) => {
-    console.log(request.response);
+    console.log('Captcha response: ', request.response);
     vm.$set(vm, 'captcha', request.response);
   });
