@@ -170,6 +170,7 @@ export default class KoboService {
    */
   async login({ username, password, captcha }) {
     const loginParams = await this.getExtraLoginParams();
+
     const postData = {
       "LogInModel.WorkflowId": loginParams.workflowId,
 			"LogInModel.Provider": this.Affiliate,
@@ -184,6 +185,7 @@ export default class KoboService {
       url: loginParams.signInUrl,
       method: 'post',
       data: postData,
+      headers: {'Content-Type': 'application/x-www-form-urlencoded' },
     });
 
     const urlMatch = response.data.match(/'(?<userauth>kobo:\/\/UserAuthenticated\?[^']+)';/);

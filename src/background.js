@@ -1,4 +1,5 @@
 import Axios from 'axios';
+import { transformRequest } from './common/utils';
 
 console.debug('Initializing background!');
 
@@ -18,7 +19,7 @@ chrome.runtime.onMessage
     console.log('Recieved request', axiosConfig, sender);
     if (sender.tab) {
       // from the content script
-      Axios.request(axiosConfig)
+      Axios.request(transformRequest(axiosConfig))
         .then(response => sendResponse({ response }))
         .catch(error => sendResponse({ error }))
       return true; // signal intent to respond asynchronously
@@ -28,9 +29,9 @@ chrome.runtime.onMessage
 
 chrome.webRequest.onBeforeSendHeaders.addListener(
   (details) => {
-    // console.log('FIRE', details)
+    console.log('FIRE', details)
     for (var i = 0; i < details.requestHeaders.length; ++i) {
-      if (['User-Agent', 'Cookie', 'Host', 'Origin'].indexOf(details.requestHeaders[i].name) >= 0) {
+      if (['User-Agent'].indexOf(details.requestHeaders[i].name) >= 0) {
         // console.log('Removing HEADER', details.requestHeaders[i].name);
         details.requestHeaders.splice(i, 1);
       }

@@ -71,9 +71,29 @@ function backgroundRequest(axiosConfig) {
   );
 }
 
+function transformRequest(axiosRequest) {
+  console.log(axiosRequest);
+  if (axiosRequest.headers && 'Content-Type' in axiosRequest.headers) {
+    if (axiosRequest.headers['Content-Type'] === 'application/x-www-form-urlencoded') {
+      console.log('reWrite')
+      const formData = new URLSearchParams();
+      Object.entries(axiosRequest.data).forEach((key, value) => {
+        formData.append(key, value);
+      });
+      console.log('reWrite', formData);
+      return {
+        ...axiosRequest,
+        data: formData,
+      };
+    }
+  }
+  return axiosRequest;
+}
+
 export {
   addInPageContext,
   injectScript,
   inject,
   backgroundRequest,
+  transformRequest
 };

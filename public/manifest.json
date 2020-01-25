@@ -17,7 +17,10 @@
     "webRequestBlocking",
     "https://authorize.kobo.com/",
     "http://store.kobobooks.com/",
-    "https://storeapi.kobo.com/"
+    "https://store.kobobooks.com/",
+    "https://storeapi.kobo.com/",
+    "https://www.kobo.com/",
+    "https://auth.kobobooks.com/"
   ],
   "externally_connectable": {
     "matches": ["*://*.kobo.com/*"]
